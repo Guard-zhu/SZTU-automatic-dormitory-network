@@ -2,6 +2,7 @@ import requests
 import sys
 import json
 import socket
+import uuid
 from os.path import dirname, realpath
 from sys import executable
 
@@ -12,6 +13,10 @@ def connect():
         my_ip = socket.gethostbyname(hostname)
     except:
         sys.exit(-1)
+    
+
+    mac = hex(uuid.getnode()).replace('0x', '').upper()
+    mac = ':'.join(mac[i: i + 2] for i in range(0, 11, 2))
 
     path = dirname(realpath(executable)) + r'\user_info.json'
     url = 'http://10.99.99.99:8010/cgi-bin/webauth/ajax_webauth'
@@ -38,7 +43,7 @@ def connect():
         'action': 'login',
         'user': user,
         'pwd': pwd,
-        'usrmac': '30:5f:77:d9:28:01',
+        'usrmac': mac,
         'ip': my_ip,
         'success': 'http://47.98.217.39/lfradius/libs/portal/unify/portal.php/login/success/nastype/Panabit/basip/10.99.99.99/usrip/' + my_ip,
         'fail': 'http://47.98.217.39/lfradius/libs/portal/unify/portal.php/login/fail'
